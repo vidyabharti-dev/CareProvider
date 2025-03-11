@@ -51,7 +51,9 @@ const db = admin.firestore();  // Firestore Database
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
-
+app.get("/", (req, res) => {
+    res.send("Welcome to the Care Provider API!");
+  });
 // Define the GET API for fetching Care Provider by pyGUID
 app.get("/getCareProvider", async (req, res) => {
   const pyGUID = req.query.pyGUID;
