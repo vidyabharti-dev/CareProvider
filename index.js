@@ -108,5 +108,90 @@ app.put("/updateCareProvider", async (req, res) => {
   }
 });
 
+// DELETE API for removing a Care Provider by pyGUID
+app.delete("/deleteCareProvider/:pyGUID", async (req, res) => {
+  const pyGUID = req.params.pyGUID;
+
+  if (!pyGUID) {
+    return res.status(400).send("pyGUID is required");
+  }
+
+  try {
+    const docRef = db.collection("CareProviders").doc(pyGUID);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      return res.status(404).send("Care Provider not found");
+    }
+
+    await docRef.delete();
+
+    res.status(200).json({ message: `Care Provider with pyGUID ${pyGUID} deleted successfully` });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error deleting Care Provider: " + err.message);
+  }
+});
+
+
 // Start the server
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+
+/*
+get 
+
+fetch("http://localhost:8080/getCareProvider?pyGUID=67890")
+  .then(res => res.json())
+  .then(data => console.log(data))
+  .catch(err => console.error(err));
+
+
+  post
+
+  fetch("http://localhost:8080/addCareProvider", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    pyGUID: "67890",
+    name: "Jane Smith",
+    specialization: "Dermatology",
+    email: "janesmith@example.com",
+    phone: "123-456-7890"
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));
+
+
+put
+
+fetch("http://localhost:8080/updateCareProvider", {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    pyGUID: "12345",
+    data: { specialization: "Neurology" }
+  })
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));
+
+
+delete
+
+fetch("http://localhost:8080/deleteCareProvider/12345", {
+  method: "DELETE"
+})
+.then(res => res.json())
+.then(data => console.log(data))
+.catch(err => console.error(err));
+
+
+*/
