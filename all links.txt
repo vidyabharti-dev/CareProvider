@@ -1,0 +1,36 @@
+https://dashboard.render.com/web/srv-cv866dt2ng1s73ecrbtg/deploys/dep-cv8nkeggph6c73ads5g0
+
+
+https://github.com/vidyabharti-dev/CareProvider/tree/master
+
+https://console.firebase.google.com/u/2/project/online-2f802/firestore/databases/-default-/data/~2FCareProviders~2F6780?view=panel-view&query=1%7CLIM%7C3%2F100&scopeType=collection&scopeName=%2FCareProviders%20
+
+
+http://localhost:8080/addCareProvider  put
+
+{
+  "pyGUID": "67890",
+  "data": {
+    "specialization": "Nurse Practitioner",
+    "name": "Jane Doe",
+    "address": "123 New Street, City, Country",
+    "phone": "+1234567890",
+    "email": "jane.doe@example.com"
+  }
+}
+
+
+https://careprovider-4glm.onrender.com/getCareProvider?pyGUID=6780  get
+
+https://careprovider-4glm.onrender.com/deleteCareProvider/67890  delete
+
+http://localhost:8080/addCareProvider post
+
+{
+  "pyGUID": "60",
+  "name": "Jane Smith",
+  "specialization": "Dermatology",
+  "email": "janesmith@example.com",
+  "phone": "123-456-7890"
+}
+

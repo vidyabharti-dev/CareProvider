@@ -78,6 +78,28 @@ app.get("/getCareProvider", async (req, res) => {
   }
 });
 
+// GET API for fetching all Care Providers
+app.get("/getAllCareProviders", async (req, res) => {
+  try {
+    const snapshot = await db.collection("CareProviders").get(); // Fetch all documents in the "CareProviders" collection
+
+    if (snapshot.empty) {
+      return res.status(404).send("No Care Providers found");
+    }
+
+    const careProviders = [];
+    snapshot.forEach(doc => {
+      careProviders.push(doc.data());
+    });
+
+    res.json(careProviders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching Care Providers: " + err.message);
+  }
+});
+
+
 // POST API for adding a new Care Provider
 app.post("/addCareProvider", async (req, res) => {
   const careProviderData = req.body; // Expected to send JSON body
