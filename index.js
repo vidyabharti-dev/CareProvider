@@ -1,8 +1,15 @@
 const express = require("express");
 const admin = require("firebase-admin");
-
+const cors = require("cors"); // Import CORS
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+app.use(cors({
+  origin: 'http://localhost:8080',  // Allow your frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type']
+}));
+
 
 // Initialize Firebase Admin SDK with service account credentials
 admin.initializeApp({
@@ -51,6 +58,7 @@ const db = admin.firestore();  // Firestore Database
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+
 app.get("/", (req, res) => {
     res.send("Welcome to the Care Provider API!");
   });
