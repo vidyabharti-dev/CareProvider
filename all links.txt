@@ -19,6 +19,7 @@ http://localhost:8080/addCareProvider  put
   }
 }
 
+https://careprovider-4glm.onrender.com/getAllCareProviders
 
 https://careprovider-4glm.onrender.com/getCareProvider?pyGUID=6780  get
 
