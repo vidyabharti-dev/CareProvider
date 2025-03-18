@@ -117,6 +117,33 @@ app.post("/addCareProvider", async (req, res) => {
   }
 });
 
+
+// POST API for adding a payment
+app.post("/transaction", async (req, res) => {
+  const transaction = req.body; // Expected to send JSON body
+  console.log('Received transaction request:', req.body); // Add this line
+
+
+  // Validate required fields
+  if (!transaction.AccountID || !transaction.TransactionType || !transaction.Amount|| !transaction.RecipientID|| !transaction.Description|| !transaction.UserID) {
+    return res.status(400).send("AccountID, TransactionType,RecipientID,Amount and Name are required.");
+  }
+
+  try {
+    // Use Firestore's `add` method to automatically generate an ID
+    const docRef = await db.collection("Transaction").add(transaction);
+
+    // Respond with the auto-generated ID
+    res.status(201).send({
+      message: "successfully transaction",
+      id: docRef.id, // Firestore automatically generates the ID
+    });
+  } catch (err) {
+    res.status(500).send("Error in transaction: " + err.message);
+  }
+});
+
+
 // PUT API for updating an existing Care Provider
 app.put("/updateCareProvider", async (req, res) => {
   const { pyGUID, data } = req.body; // Expecting pyGUID and the data to update
