@@ -20,7 +20,7 @@ https://careprovider-4glm.onrender.com/updateCareProvider Update
 
 https://careprovider-4glm.onrender.com/getAllCareProviders  getall
 
-https://careprovider-4glm.onrender.com/GetTransaction  
+https://careprovider-4glm.onrender.com/GetAllTransaction  
 
 https://careprovider-4glm.onrender.com/getCareProvider?pyGUID=6780  getBYID
 
