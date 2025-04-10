@@ -144,7 +144,7 @@ app.post("/transaction", async (req, res) => {
 });
 
 // GET API for fetching all Care Providers
-app.get("/GetTransaction", async (req, res) => {
+app.get("/GetAllTransaction", async (req, res) => {
   try {
     const snapshot = await db.collection("Transaction").get(); // Fetch all documents in the "CareProviders" collection
 
