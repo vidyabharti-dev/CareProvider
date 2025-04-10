@@ -132,11 +132,14 @@ app.post("/transaction", async (req, res) => {
   try {
     // Use Firestore's `add` method to automatically generate an ID
     const docRef = await db.collection("Transaction").add(transaction);
+    
+   // Then, update the newly created doc with the pyGUID (same as the doc ID)
+    await docRef.update({ pyGUID: docRef.id });
 
     // Respond with the auto-generated ID
     res.status(201).send({
       message: "successfully transaction",
-      id: docRef.id, // Firestore automatically generates the ID
+      pyGUID: docRef.id, // Firestore automatically generates the ID
     });
   } catch (err) {
     res.status(500).send("Error in transaction: " + err.message);
