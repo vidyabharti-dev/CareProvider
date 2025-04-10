@@ -149,25 +149,27 @@ app.post("/transaction", async (req, res) => {
 // GET API for fetching all Care Providers
 app.get("/GetAllTransaction", async (req, res) => {
   try {
-    const snapshot = await db.collection("Transaction").get(); // Fetch all documents in the "CareProviders" collection
+    const snapshot = await db.collection("Transaction").get(); // Fetch all documents in the "Transaction" collection
 
     if (snapshot.empty) {
       return res.status(404).send("No Data found");
     }
 
-    const careProviders = [];
+    const transactions = [];
     snapshot.forEach(doc => {
-      careProviders.push({
-                pyGUID: doc.id,         // Add the Firestore document ID as pyGUID
-...doc.data());
+      transactions.push({
+        pyGUID: doc.id,
+        ...doc.data()
+      });
     });
 
-    res.json(careProviders);
+    res.json(transactions);
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error fetching : " + err.message);
+    res.status(500).send("Error fetching transactions: " + err.message);
   }
 });
+
 app.get("/getTransaction", async (req, res) => {
   const pyGUID = req.query.pyGUID;
   if (!pyGUID) return res.status(400).send("pyGUID is required");
