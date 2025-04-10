@@ -163,7 +163,20 @@ app.get("/GetAllTransaction", async (req, res) => {
     res.status(500).send("Error fetching : " + err.message);
   }
 });
+app.get("/getTransaction", async (req, res) => {
+  const pyGUID = req.query.pyGUID;
+  if (!pyGUID) return res.status(400).send("pyGUID is required");
 
+  try {
+    const doc = await db.collection("Transaction").doc(pyGUID).get();
+    if (!doc.exists) return res.status(404).send("Care Provider not found");
+
+    res.json(doc.data());
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
 // PUT API for updating an existing Care Provider
 app.put("/updateCareProvider", async (req, res) => {
   const { pyGUID, data } = req.body; // Expecting pyGUID and the data to update
