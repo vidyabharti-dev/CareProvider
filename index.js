@@ -172,7 +172,7 @@ app.get("/getTransaction", async (req, res) => {
 
   try {
     const doc = await db.collection("Transaction").doc(pyGUID).get();
-    if (!doc.exists) return res.status(404).send("Care Provider not found");
+    if (!doc.exists) return res.status(404).send("pyGUID not found");
 
     res.json(doc.data());
   } catch (err) {
