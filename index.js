@@ -157,7 +157,7 @@ app.get("/GetAllTransaction", async (req, res) => {
 
     const careProviders = [];
     snapshot.forEach(doc => {
-      careProviders.push(
+      careProviders.push({
                 pyGUID: doc.id,         // Add the Firestore document ID as pyGUID
 ...doc.data());
     });
