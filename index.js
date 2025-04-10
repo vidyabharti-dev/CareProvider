@@ -157,7 +157,9 @@ app.get("/GetAllTransaction", async (req, res) => {
 
     const careProviders = [];
     snapshot.forEach(doc => {
-      careProviders.push(doc.data());
+      careProviders.push(
+                pyGUID: doc.id,         // Add the Firestore document ID as pyGUID
+...doc.data());
     });
 
     res.json(careProviders);
@@ -173,8 +175,12 @@ app.get("/getTransaction", async (req, res) => {
   try {
     const doc = await db.collection("Transaction").doc(pyGUID).get();
     if (!doc.exists) return res.status(404).send("pyGUID not found");
-
-    res.json(doc.data());
+   // Combine the data with pyGUID
+    const transaction = {
+      pyGUID: doc.id,
+      ...doc.data()
+    };
+    res.json(transaction);
   } catch (err) {
     console.error(err);
     res.status(500).send(err.message);
