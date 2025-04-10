@@ -143,6 +143,26 @@ app.post("/transaction", async (req, res) => {
   }
 });
 
+// GET API for fetching all Care Providers
+app.get("/GetTransaction", async (req, res) => {
+  try {
+    const snapshot = await db.collection("Transaction").get(); // Fetch all documents in the "CareProviders" collection
+
+    if (snapshot.empty) {
+      return res.status(404).send("No Data found");
+    }
+
+    const careProviders = [];
+    snapshot.forEach(doc => {
+      careProviders.push(doc.data());
+    });
+
+    res.json(careProviders);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching : " + err.message);
+  }
+});
 
 // PUT API for updating an existing Care Provider
 app.put("/updateCareProvider", async (req, res) => {
