@@ -21,6 +21,13 @@ https://careprovider-4glm.onrender.com/updateCareProvider Update
 https://careprovider-4glm.onrender.com/getAllCareProviders  getall
 
 https://careprovider-4glm.onrender.com/GetAllTransaction
+AccountNumber
+Bnak Name
+Account HoldER nAME
+tRNSACTION DATE
+tRNSACTION id
+
+
 https://careprovider-4glm.onrender.com/getTransaction?pyGUID=wsJKY82tbiP3hhzDdGFl
   
 
