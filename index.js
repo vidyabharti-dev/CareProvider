@@ -119,32 +119,71 @@ app.post("/addCareProvider", async (req, res) => {
 
 
 // POST API for adding a payment
-app.post("/transaction", async (req, res) => {
-  const transaction = req.body; // Expected to send JSON body
-  console.log('Received transaction request:', req.body); // Add this line
+// app.post("/transaction", async (req, res) => {
+//   const transaction = req.body; // Expected to send JSON body
+//   console.log('Received transaction request:', req.body); // Add this line
 
+
+//   // Validate required fields
+//   if (!transaction.AccountID || !transaction.TransactionType || !transaction.Amount|| !transaction.RecipientID|| !transaction.Description|| !transaction.UserID) {
+//     return res.status(400).send("AccountID, TransactionType,RecipientID,Amount and Name are required.");
+//   }
+
+//   try {
+//     // Use Firestore's `add` method to automatically generate an ID
+//     const docRef = await db.collection("Transaction").add(transaction);
+    
+//    // Then, update the newly created doc with the pyGUID (same as the doc ID)
+//     await docRef.update({ pyGUID: docRef.id });
+
+//     // Respond with the auto-generated ID
+//     res.status(201).send({
+//       message: "successfully transaction",
+//       pyGUID: docRef.id, // Firestore automatically generates the ID
+//     });
+//   } catch (err) {
+//     res.status(500).send("Error in transaction: " + err.message);
+//   }
+// });
+
+
+
+
+app.post("/transaction", async (req, res) => {
+  const transaction = req.body;
+  console.log('Received transaction request:', transaction);
 
   // Validate required fields
-  if (!transaction.AccountID || !transaction.TransactionType || !transaction.Amount|| !transaction.RecipientID|| !transaction.Description|| !transaction.UserID) {
-    return res.status(400).send("AccountID, TransactionType,RecipientID,Amount and Name are required.");
+  const requiredFields = ["AccountID", "TransactionType", "Amount", "RecipientID", "Description", "UserID"];
+  for (const field of requiredFields) {
+    if (!transaction[field]) {
+      return res.status(400).send(`${field} is required.`);
+    }
   }
 
+  // Generate TransactionID
+  const generateTransactionID = () => {
+    const random = Math.floor(1000 + Math.random() * 9000); // Random 4-digit
+    return `TXN${Date.now().toString().slice(-6)}${random}`;
+  };
+  transaction.TransactionID = generateTransactionID();
+
   try {
-    // Use Firestore's `add` method to automatically generate an ID
     const docRef = await db.collection("Transaction").add(transaction);
-    
-   // Then, update the newly created doc with the pyGUID (same as the doc ID)
+
+    // Optionally add doc ID as pyGUID
     await docRef.update({ pyGUID: docRef.id });
 
-    // Respond with the auto-generated ID
     res.status(201).send({
-      message: "successfully transaction",
-      pyGUID: docRef.id, // Firestore automatically generates the ID
+      message: "Transaction successfully created",
+      pyGUID: docRef.id,
+      TransactionID: transaction.TransactionID
     });
   } catch (err) {
     res.status(500).send("Error in transaction: " + err.message);
   }
 });
+
 
 // GET API for fetching all Care Providers
 app.get("/GetAllTransaction", async (req, res) => {
