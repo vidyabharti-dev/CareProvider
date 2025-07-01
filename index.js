@@ -79,9 +79,10 @@ app.get("/getCareProvider", async (req, res) => {
 });
 
 // GET API for fetching all Care Providers
-// app.get("/getAllCareProviders", async (req, res) => {
+app.get("/getAllCareProviders", async (req, res) => {
 
-app.get("/getAllCareProvider", async (req, res) => {
+// app.get("/getAllCareProvider", async (req, res) => {
+  app.get("/getAllCareProviders", async (req, res) => {
   try {
     const snapshot = await db.collection("CareProviders").get(); // Fetch all documents in the "CareProviders" collection
 
