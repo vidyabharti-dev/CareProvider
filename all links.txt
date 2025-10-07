@@ -2,6 +2,7 @@ https://dashboard.render.com/web/srv-cv866dt2ng1s73ecrbtg/deploys/dep-cv8nkeggph
 
 
 https://github.com/vidyabharti-dev/CareProvider/tree/master
+vidyasahu.0620@gmail.com
 
 https://console.firebase.google.com/u/2/project/online-2f802/firestore/databases/-default-/data/~2FCareProviders~2F6780?view=panel-view&query=1%7CLIM%7C3%2F100&scopeType=collection&scopeName=%2FCareProviders%20
 
