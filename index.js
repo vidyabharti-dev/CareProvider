@@ -75,7 +75,6 @@ const db = admin.firestore();
 //   })
 // });
 
-const db = admin.firestore();  // Firestore Database
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
