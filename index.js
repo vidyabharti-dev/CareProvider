@@ -29,7 +29,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 
-const db = admin.firestore();
+
 
 
 // Initialize Firebase Admin SDK with service account credentials
