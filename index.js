@@ -106,6 +106,8 @@ app.get("/", (req, res) => {
 // New Endpoint Implementation: Swiftrinity Exam Hash Generator
 // Endpoint: https://<baseurl>/<examid_1>/swiftrinityexam/v1/{examid_2}
 app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
+    console.log("🚀 Endpoint hit!", req.params, req.headers);
+
   // -----------------------------------------------------------
   // 🔑 STEP 1: OAuth Authentication Check (ID Token / Bearer)
   // -----------------------------------------------------------
