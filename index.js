@@ -44,7 +44,6 @@ db.collection("test").doc("test").get()
 db.collection("ExamLogs").add({ test: true, timestamp: new Date().toISOString() })
   .then(() => console.log("✅ Firestore write test successful"))
   .catch((err) => console.error("❌ Firestore write test failed:", err));
-console.log("🟢 Ready to write Firestore log:", logData);
 
 // Initialize Firebase Admin SDK with service account credentials
 // admin.initializeApp({
@@ -170,6 +169,7 @@ app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
       ipAddress: ipAddress,
       executionDateTime: executionDateTime,
     };
+console.log("🟢 Ready to write Firestore log:", logData);
 
     await db.collection("ExamLogs").add(logData);
 
