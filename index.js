@@ -29,15 +29,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
-// Middleware to parse JSON
-app.use(express.json());
 
-// ✅ Add this line right here
-app.use((req, res, next) => {
-  console.log(`🟡 Incoming Request → ${req.method} ${req.originalUrl}`);
-  console.log("Headers:", req.headers);
-  next();
-});
 
 console.log("🔐 Private key preview:", process.env.FIREBASE_PRIVATE_KEY.slice(0, 50));
 
@@ -101,6 +93,13 @@ console.log("🟢 Ready to write Firestore log:", logData);
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
+
+// ✅ Add this line right here
+app.use((req, res, next) => {
+  console.log(`🟡 Incoming Request → ${req.method} ${req.originalUrl}`);
+  console.log("Headers:", req.headers);
+  next();
+});
 app.get("/", (req, res) => {
     res.send("Welcome to the Care Provider API!");
   });
