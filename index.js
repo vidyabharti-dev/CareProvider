@@ -3,7 +3,7 @@ const admin = require("firebase-admin");
 const crypto = require("crypto");
 const cors = require("cors"); // Import CORS
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 
 app.use(cors({
   origin: 'http://localhost:8080',  // Allow your frontend URL
