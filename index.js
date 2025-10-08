@@ -1,3 +1,4 @@
+// server.js (MODIFIED for Single Port / Cloud Deployment)
 const express = require("express");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
@@ -143,7 +144,6 @@ app.post(
     // 1. Extract inputs
     const {examid_1, examid_2} = req.params;
     const receivedCandidateKey = req.headers.candidatekey;
-    const {executionDateTime} = req.body;
 
     // --- Validation Checks ---
     if (!receivedCandidateKey) {
@@ -152,13 +152,9 @@ app.post(
         description: "The candidatekey header is required.",
       });
     }
-    if (!executionDateTime) {
-      return res.status(400).json({
-        error: "invalid_request",
-        description: "executionDateTime is required in the body.",
-      });
-    }
-
+    const executionDateTime = new Date().toISOString();
+    const ipAddress =
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress;
     try {
       // 2. Generate the required hash (Signature generation logic)
       const generatedHash = generateVerificationHash(
@@ -175,6 +171,7 @@ app.post(
       return res.json({
         status: "success",
         message: "Signature generated successfully.",
+        ipAddress: ipAddress,
         exam_info: {examid_1, examid_2, executionDateTime},
         response: generatedHash,
       });
