@@ -30,6 +30,7 @@ admin.initializeApp({
 const db = admin.firestore();
 
 
+console.log("🔐 Private key preview:", process.env.FIREBASE_PRIVATE_KEY.slice(0, 50));
 
 // Test Firebase connection on startup
 db.collection("test").doc("test").get()
