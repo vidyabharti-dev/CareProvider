@@ -39,7 +39,9 @@ db.collection("test").doc("test").get()
     process.exit(1);
   });
 
-
+db.collection("ExamLogs").add({ test: true, timestamp: new Date().toISOString() })
+  .then(() => console.log("✅ Firestore write test successful"))
+  .catch((err) => console.error("❌ Firestore write test failed:", err));
 
 // Initialize Firebase Admin SDK with service account credentials
 // admin.initializeApp({
@@ -111,9 +113,11 @@ app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
 
   try {
     decodedToken = await admin.auth().verifyIdToken(idToken);
+      console.log("✅ Decoded token:", decodedToken);
+
   } catch (error) {
-    console.error("Token verification error:", error.message);
-    // Token is invalid, expired, or tampered with
+  console.error("❌ Token verification error:", error.message);
+  console.error(error);    // Token is invalid, expired, or tampered with
     return res
       .status(401)
       .send({error: "Unauthorized: Invalid or expired access token."});
@@ -172,6 +176,16 @@ app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
      console.error("Full error object in endpoint:");
   console.error(error); // This will log the complete error with stack trace
     // console.error("HMAC Hash or DB Log Error:", error);
+
+      console.error("🔥 [ERROR] HMAC or Firestore failure!");
+  console.error("➡️ Error message:", error.message);
+  console.error("➡️ Full stack trace:", error.stack);
+  console.error("➡️ Type of error:", typeof error);
+  console.error("➡️ Error JSON:", JSON.stringify(error, null, 2));
+
+  // Force log flush
+  process.stdout.write("Flushed error logs\n");
+    
     res.status(500).send({
       error: "Internal server error during hash generation or logging.",
     details: error.message // Sending the actual error message to the client
