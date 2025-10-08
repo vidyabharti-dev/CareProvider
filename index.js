@@ -102,6 +102,11 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
     res.send("Welcome to the Care Provider API!");
   });
+app.get("/ping", (req, res) => {
+  console.log("✅ /ping endpoint hit!");
+  console.log("Headers:", req.headers);
+  res.json({ message: "pong" });
+});
 
 // New Endpoint Implementation: Swiftrinity Exam Hash Generator
 // Endpoint: https://<baseurl>/<examid_1>/swiftrinityexam/v1/{examid_2}
