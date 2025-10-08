@@ -6,7 +6,7 @@ const app = express();
 const PORT = process.env.PORT;
 
 app.use(cors({
-  origin: 'http://localhost:8080',  // Allow your frontend URL
+  //origin: 'http://localhost:8080',  // Allow your frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type']
 }));
@@ -30,6 +30,14 @@ admin.initializeApp({
 const db = admin.firestore();
 
 
+
+// Test Firebase connection on startup
+db.collection("test").doc("test").get()
+  .then(() => console.log("✅ Firebase connected successfully"))
+  .catch((error) => {
+    console.error("❌ Firebase connection failed:", error);
+    process.exit(1);
+  });
 
 
 
