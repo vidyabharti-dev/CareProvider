@@ -12,7 +12,9 @@ const PORT = process.env.PORT || 8080;
 // ----------------------
 // 1️⃣ Initialize Firebase Admin with Service Account
 // ----------------------
-const serviceAccountPath = path.join(__dirname, "./service-account.json"); // Path to your downloaded JSON
+// const serviceAccountPath = path.join(__dirname, "./service-account.json"); // Path to your downloaded JSON
+// const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf8"));
+const serviceAccountPath = path.join("/etc/secrets", "service-account.json");
 const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, "utf8"));
 
 admin.initializeApp({
