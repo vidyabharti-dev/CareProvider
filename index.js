@@ -161,9 +161,12 @@ app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
       executionDateTime: executionDateTime,
     });
   } catch (error) {
-    console.error("HMAC Hash or DB Log Error:", error);
+     console.error("Full error object in endpoint:");
+  console.error(error); // This will log the complete error with stack trace
+    // console.error("HMAC Hash or DB Log Error:", error);
     res.status(500).send({
       error: "Internal server error during hash generation or logging.",
+    details: error.message // Sending the actual error message to the client
     });
   }
 });
