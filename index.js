@@ -29,6 +29,15 @@ admin.initializeApp({
 
 const db = admin.firestore();
 
+// Middleware to parse JSON
+app.use(express.json());
+
+// ✅ Add this line right here
+app.use((req, res, next) => {
+  console.log(`🟡 Incoming Request → ${req.method} ${req.originalUrl}`);
+  console.log("Headers:", req.headers);
+  next();
+});
 
 console.log("🔐 Private key preview:", process.env.FIREBASE_PRIVATE_KEY.slice(0, 50));
 
@@ -43,6 +52,7 @@ db.collection("test").doc("test").get()
 db.collection("ExamLogs").add({ test: true, timestamp: new Date().toISOString() })
   .then(() => console.log("✅ Firestore write test successful"))
   .catch((err) => console.error("❌ Firestore write test failed:", err));
+console.log("🟢 Ready to write Firestore log:", logData);
 
 // Initialize Firebase Admin SDK with service account credentials
 // admin.initializeApp({
@@ -409,7 +419,10 @@ app.delete("/deleteCareProvider/:pyGUID", async (req, res) => {
 
 
 // Start the server
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT || 10000, "0.0.0.0", () => {
+  console.log(`✅ Server running on port ${PORT || 10000}`);
+});
 
 
 /*
