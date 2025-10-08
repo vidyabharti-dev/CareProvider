@@ -429,6 +429,10 @@ app.delete("/deleteCareProvider/:pyGUID", async (req, res) => {
 app.listen(PORT || 10000, "0.0.0.0", () => {
   console.log(`✅ Server running on port ${PORT || 10000}`);
 });
+console.log("📜 Registered routes:");
+app._router.stack.forEach(r => {
+  if (r.route && r.route.path) console.log(r.route.path);
+});
 
 
 /*
