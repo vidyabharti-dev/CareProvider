@@ -168,7 +168,16 @@ app.post(
       console.log(
         `[LOG] SUCCESS: Request from client ${req.client.sub} validated. Signature calculated.`
       );
+const apiResponse = {
+  status: "success",
+  message: "Signature generated successfully.",
+  ipAddress: ipAddress,
+  exam_info: { examid_1, examid_2, executionDateTime },
+  response: generatedHash,
+};
 
+// Log the response
+console.log(`[LOG] API Response:`, apiResponse);
       // 3. Final API Response
       return res.json({
         status: "success",
