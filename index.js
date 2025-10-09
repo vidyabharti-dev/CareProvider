@@ -145,7 +145,7 @@ try {
 app.post(
   "/:examid_1/swiftrinityexam/v1/:examid_2", // Dynamic URL IDs
   verifyToken, // Layer 1: OAuth Token Check
-  (req, res) => {
+  async (req, res) => {
     // 1. Extract inputs
     const {examid_1, examid_2} = req.params;
     const receivedCandidateKey = req.headers.candidatekey;
@@ -180,6 +180,17 @@ const apiResponse = {
   exam_info: { examid_1, examid_2, executionDateTime },
   response: generatedHash,
 };
+
+      const logData = {
+  authenticated_client: req.client.sub,
+  examid_1,
+  examid_2,
+  responseHash: generatedHash,
+  candidateKeyUsed: receivedCandidateKey,
+  ipAddress,
+  executionDateTime,
+};
+
     await writeToCollection(NEW_COLLECTION_NAME, logData);
 
 // Log the response
