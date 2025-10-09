@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // The OAuth 2.0 Token Endpoint
 app.post("/oauth/token", (req, res) => {
   const {grant_type, client_id, client_secret} = req.body;
-
+console.log(req.body+" req.body");
   if (grant_type !== "client_credentials") {
     return res.status(400).json({error: "unsupported_grant_type"});
   }
@@ -152,6 +152,8 @@ app.post(
         description: "The candidatekey header is required.",
       });
     }
+    console.log(req.params+" req.params");
+
     const executionDateTime = new Date().toISOString();
     const ipAddress =
       req.headers["x-forwarded-for"] || req.socket.remoteAddress;
