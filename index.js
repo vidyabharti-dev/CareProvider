@@ -177,7 +177,7 @@ const apiResponse = {
   message: "Signature generated successfully.",
   ipAddress: ipAddress,
   exam_info: { examid_1, examid_2, executionDateTime },
-  candidateKeyUsed:receivedCandidateKey
+  candidateKeyUsed:receivedCandidateKey,
   response: generatedHash,
 };
 
