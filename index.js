@@ -148,7 +148,7 @@ app.post(
     // 1. Extract inputs
     const {examid_1, examid_2} = req.params;
     const receivedCandidateKey = req.headers.candidatekey;
-    console.log(receivedCandidateKey);
+    console.log(receivedCandidateKey+"  canddiate key");
 
     // --- Validation Checks ---
     if (!receivedCandidateKey) {
