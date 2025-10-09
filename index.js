@@ -115,6 +115,7 @@ function verifyToken(req, res, next) {
       .json({error: "invalid_token", description: err.message});
   }
 }
+const NEW_COLLECTION_NAME = "SwiftrinityExamLogs";
 
 // -------------------------------------------------------------
 // Temporary Hash Script for Initial Test Output
@@ -179,6 +180,7 @@ const apiResponse = {
   exam_info: { examid_1, examid_2, executionDateTime },
   response: generatedHash,
 };
+    await writeToCollection(NEW_COLLECTION_NAME, logData);
 
 // Log the response
 console.log(`[LOG] API Response:`, apiResponse);
