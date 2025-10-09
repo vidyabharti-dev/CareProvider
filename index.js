@@ -7,7 +7,7 @@ const crypto = require("crypto");
 
 // Load environment variables from .env file
 dotenv.config();
-
+const { writeToCollection } = require("./firebase"); // <-- Import helper
 // --- Configuration Constants ---
 const {CLIENT_REGISTRY} = require("./clients");
 const LOCAL_PORT = 3000; // Use this for local fallback
@@ -88,6 +88,10 @@ function generateVerificationHash(examid_1, examid_2, secretKey) {
  * Middleware to check the OAuth 2.0 Bearer Token (Layer 1 Security)
  * ... (Function remains unchanged)
  */
+
+// Use a new collection name
+const NEW_COLLECTION_NAME = "SwiftrinityExamLogs";  
+
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
