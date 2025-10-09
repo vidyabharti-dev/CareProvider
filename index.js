@@ -90,7 +90,6 @@ function generateVerificationHash(examid_1, examid_2, secretKey) {
  */
 
 // Use a new collection name
-const NEW_COLLECTION_NAME = "SwiftrinityExamLogs";  
 
 function verifyToken(req, res, next) {
   const authHeader = req.headers.authorization;
