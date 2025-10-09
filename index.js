@@ -7,7 +7,7 @@ const crypto = require("crypto");
 
 // Load environment variables from .env file
 dotenv.config();
-const { writeToCollection } = require("./firebase"); // <-- Import helper
+const { writeToCollection } = require("./db"); // <-- Import helper
 // --- Configuration Constants ---
 const {CLIENT_REGISTRY} = require("./clients");
 const LOCAL_PORT = 3000; // Use this for local fallback
