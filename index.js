@@ -177,7 +177,7 @@ const apiResponse = {
   message: "Signature generated successfully.",
   ipAddress: ipAddress,
   exam_info: { examid_1, examid_2, executionDateTime },
-  receivedCandidateKey:receivedCandidateKey,
+  candidatekey:receivedCandidateKey,
   response: generatedHash,
 };
 
@@ -186,7 +186,7 @@ const apiResponse = {
   examid_1,
   examid_2,
   responseHash: generatedHash,
-  candidateKeyUsed: receivedCandidateKey,
+  candidatekey: receivedCandidateKey,
   ipAddress,
   executionDateTime,
 };
@@ -200,6 +200,7 @@ console.log(`[LOG] API Response:`, apiResponse);
         status: "success",
         message: "Signature generated successfully.",
         ipAddress: ipAddress,
+          candidatekey: receivedCandidateKey,
         exam_info: {examid_1, examid_2, executionDateTime},
         response: generatedHash,
       });
