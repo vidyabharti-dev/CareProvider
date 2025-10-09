@@ -191,7 +191,7 @@ const apiResponse = {
   executionDateTime,
 };
 
-    await writeToCollection(NEW_COLLECTION_NAME, logData);
+    await writeToCollection(NEW_COLLECTION_NAME, apiResponse);
 
 // Log the response
 console.log(`[LOG] API Response:`, apiResponse);
