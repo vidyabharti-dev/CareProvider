@@ -41,9 +41,9 @@ db.collection("test").doc("test").get()
     process.exit(1);
   });
 
-db.collection("ExamLogs").add({ test: true, timestamp: new Date().toISOString() })
-  .then(() => console.log("✅ Firestore write test successful"))
-  .catch((err) => console.error("❌ Firestore write test failed:", err));
+// db.collection("ExamLogs").add({ test: true, timestamp: new Date().toISOString() })
+//   .then(() => console.log("✅ Firestore write test successful"))
+//   .catch((err) => console.error("❌ Firestore write test failed:", err));
 
 // Initialize Firebase Admin SDK with service account credentials
 // admin.initializeApp({
