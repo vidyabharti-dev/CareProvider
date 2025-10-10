@@ -19,7 +19,7 @@ const CANDIDATE_KEY = process.env.CANDIDATE_KEY; // For temporary script
 // I. AUTHORIZATION SERVER (TOKEN SERVER) ROUTES
 // =============================================================
 const app = express();
-app.set('trust proxy', true); 
+// app.set('trust proxy', true); 
 // The token endpoint uses urlencoded body, so we set that up first.
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -161,7 +161,9 @@ app.post(
     console.log(req.params+" req.params");
 
     const executionDateTime = new Date().toISOString();
- const ipAddress = req.ip;
+ const ipAddress =
+      req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    
     try {
       // 2. Generate the required hash (Signature generation logic)
       const generatedHash = generateVerificationHash(
