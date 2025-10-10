@@ -161,8 +161,13 @@ app.post(
     console.log(req.params+" req.params");
 
     const executionDateTime = new Date().toISOString();
- const ipAddress =
-      req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+ // const ipAddress =
+ //      req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+
+        const ipHeader = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+    const ipAddressArray = ipHeader
+      ? ipHeader.split(",").map((ip) => ip.trim())
+      : [];
     
     try {
       // 2. Generate the required hash (Signature generation logic)
@@ -178,7 +183,7 @@ app.post(
 const apiResponse = {
   status: "success",
   message: "Signature generated successfully.",
-  ipAddress: ipAddress,
+  ipAddress: ipAddressArray,
   exam_info: { examid_1, examid_2, executionDateTime },
   candidatekey:receivedCandidateKey,
   response: generatedHash,
@@ -190,7 +195,7 @@ const apiResponse = {
   examid_2,
   responseHash: generatedHash,
   candidatekey: receivedCandidateKey,
-  ipAddress,
+  ipAddressArray,
   executionDateTime,
 };
 
@@ -202,7 +207,7 @@ console.log(`[LOG] API Response:`, apiResponse);
       return res.json({
         status: "success",
         message: "Signature generated successfully.",
-        ipAddress: ipAddress,
+        ipAddress: ipAddressArray,
           candidatekey: receivedCandidateKey,
         exam_info: {examid_1, examid_2, executionDateTime},
         response: generatedHash,
