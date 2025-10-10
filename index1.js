@@ -110,105 +110,105 @@ app.get("/ping", (req, res) => {
 
 // New Endpoint Implementation: Swiftrinity Exam Hash Generator
 // Endpoint: https://<baseurl>/<examid_1>/swiftrinityexam/v1/{examid_2}
-app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
-    console.log("🚀 Endpoint hit!", req.params, req.headers);
+// app.get("/:examid_1/swiftrinityexam/v1/:examid_2", async (req, res) => {
+//     console.log("🚀 Endpoint hit!", req.params, req.headers);
 
-  // -----------------------------------------------------------
-  // 🔑 STEP 1: OAuth Authentication Check (ID Token / Bearer)
-  // -----------------------------------------------------------
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    // Missing or malformed OAuth token
-    return res
-      .status(401)
-      .send({error: "Unauthorized: Bearer token is missing or malformed."});
-  }
+//   // -----------------------------------------------------------
+//   // 🔑 STEP 1: OAuth Authentication Check (ID Token / Bearer)
+//   // -----------------------------------------------------------
+//   const authHeader = req.headers.authorization;
+//   if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//     // Missing or malformed OAuth token
+//     return res
+//       .status(401)
+//       .send({error: "Unauthorized: Bearer token is missing or malformed."});
+//   }
 
-  const idToken = authHeader.split("Bearer ")[1];
-  let decodedToken;
+//   const idToken = authHeader.split("Bearer ")[1];
+//   let decodedToken;
 
-  try {
-    decodedToken = await admin.auth().verifyIdToken(idToken);
-      console.log("✅ Decoded token:", decodedToken);
+//   try {
+//     decodedToken = await admin.auth().verifyIdToken(idToken);
+//       console.log("✅ Decoded token:", decodedToken);
 
-  } catch (error) {
-  console.error("❌ Token verification error:", error.message);
-  console.error(error);    // Token is invalid, expired, or tampered with
-    return res
-      .status(401)
-      .send({error: "Unauthorized: Invalid or expired access token."});
-  }
+//   } catch (error) {
+//   console.error("❌ Token verification error:", error.message);
+//   console.error(error);    // Token is invalid, expired, or tampered with
+//     return res
+//       .status(401)
+//       .send({error: "Unauthorized: Invalid or expired access token."});
+//   }
 
-  // -----------------------------------------------------------
-  // 🔑 STEP 2: HMAC Credential Check and Logic
-  // -----------------------------------------------------------
-  const {examid_1, examid_2} = req.params;
-  const candidatekey = req.headers["candidatekey"]; // Header: candidatekey (HMAC Secret Key)
+//   // -----------------------------------------------------------
+//   // 🔑 STEP 2: HMAC Credential Check and Logic
+//   // -----------------------------------------------------------
+//   const {examid_1, examid_2} = req.params;
+//   const candidatekey = req.headers["candidatekey"]; // Header: candidatekey (HMAC Secret Key)
 
-  // Check for the required HMAC Secret Key
-  if (!candidatekey) {
-    // Change status code from 400 to 403 (Forbidden) for a missing required secret credential
-    return res.status(403).send({
-      error:
-        "Forbidden: 'candidatekey' header is missing. A required secret credential is not provided.",
-    });
-  }
+//   // Check for the required HMAC Secret Key
+//   if (!candidatekey) {
+//     // Change status code from 400 to 403 (Forbidden) for a missing required secret credential
+//     return res.status(403).send({
+//       error:
+//         "Forbidden: 'candidatekey' header is missing. A required secret credential is not provided.",
+//     });
+//   }
 
-  // Get the caller's IP address
-  const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
+//   // Get the caller's IP address
+//   const ipAddress = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
 
-  // 2. Generate HMAC-SHA256 Hash
-  try {
-    const message = `${examid_1}${examid_2}`;
-    const hmac = crypto.createHmac("sha256", candidatekey);
-    hmac.update(message);
-    const responseHash = hmac.digest("hex");
-    const executionDateTime = new Date().toISOString();
+//   // 2. Generate HMAC-SHA256 Hash
+//   try {
+//     const message = `${examid_1}${examid_2}`;
+//     const hmac = crypto.createHmac("sha256", candidatekey);
+//     hmac.update(message);
+//     const responseHash = hmac.digest("hex");
+//     const executionDateTime = new Date().toISOString();
 
-    // 3. Save to Database (Firestore)
-    const logData = {
-      authenticated_uid: decodedToken.uid, // Log the UID from the validated OAuth token
-      examid_1,
-      examid_2,
-      responseHash: responseHash,
-      // WARNING: While sensitive, you were logging this key. Ensure your DB is highly secure.
-      candidatekey_used: candidatekey,
-      ipAddress: ipAddress,
-      executionDateTime: executionDateTime,
-    };
-console.log("🟢 Ready to write Firestore log:", logData);
+//     // 3. Save to Database (Firestore)
+//     const logData = {
+//       authenticated_uid: decodedToken.uid, // Log the UID from the validated OAuth token
+//       examid_1,
+//       examid_2,
+//       responseHash: responseHash,
+//       // WARNING: While sensitive, you were logging this key. Ensure your DB is highly secure.
+//       candidatekey_used: candidatekey,
+//       ipAddress: ipAddress,
+//       executionDateTime: executionDateTime,
+//     };
+// console.log("🟢 Ready to write Firestore log:", logData);
 
-    await db.collection("ExamLogs").add(logData);
+//     await db.collection("ExamLogs").add(logData);
 
-    console.log(
-      `Exam hash generated and logged for: ${examid_1}/${examid_2} by UID ${decodedToken.uid}`
-    );
+//     console.log(
+//       `Exam hash generated and logged for: ${examid_1}/${examid_2} by UID ${decodedToken.uid}`
+//     );
 
-    // 4. Return the Required Response
-    res.status(200).json({
-      response: responseHash,
-      executionDateTime: executionDateTime,
-    });
-  } catch (error) {
-     console.error("Full error object in endpoint:");
-  console.error(error); // This will log the complete error with stack trace
-    // console.error("HMAC Hash or DB Log Error:", error);
+//     // 4. Return the Required Response
+//     res.status(200).json({
+//       response: responseHash,
+//       executionDateTime: executionDateTime,
+//     });
+//   } catch (error) {
+//      console.error("Full error object in endpoint:");
+//   console.error(error); // This will log the complete error with stack trace
+//     // console.error("HMAC Hash or DB Log Error:", error);
 
-      console.error("🔥 [ERROR] HMAC or Firestore failure!");
-  console.error("➡️ Error message:", error.message);
-  console.error("➡️ Full stack trace:", error.stack);
-  console.error("➡️ Type of error:", typeof error);
-  console.error("➡️ Error JSON:", JSON.stringify(error, null, 2));
+//       console.error("🔥 [ERROR] HMAC or Firestore failure!");
+//   console.error("➡️ Error message:", error.message);
+//   console.error("➡️ Full stack trace:", error.stack);
+//   console.error("➡️ Type of error:", typeof error);
+//   console.error("➡️ Error JSON:", JSON.stringify(error, null, 2));
 
-  // Force log flush
-  process.stdout.write("Flushed error logs\n");
+//   // Force log flush
+//   process.stdout.write("Flushed error logs\n");
     
-    res.status(500).send({
-      error: "Internal server error during hash generation or logging.",
-    details: error.message // Sending the actual error message to the client
-    });
-  }
-});
+//     res.status(500).send({
+//       error: "Internal server error during hash generation or logging.",
+//     details: error.message // Sending the actual error message to the client
+//     });
+//   }
+// });
 
 
 // Define the GET API for fetching Care Provider by pyGUID
